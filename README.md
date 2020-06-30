@@ -10,25 +10,26 @@
 
 ---
 ## Features:
-    * Endpoint `/graphql`.
-    * Ability to create and retrieve User record.
 
-    * Ability to retrieve/create/edit/delete Identification record. 
+* Endpoint `/graphql`.
+* Ability to create and retrieve User record.
 
-    * Ability to retrieve/create/edit/delete Medical Rec record. 
+* Ability to retrieve/create/edit/delete Identification record. 
 
-    * Ability to retrieve User's info, Identification and Medical Rec. 
+* Ability to retrieve/create/edit/delete Medical Rec record. 
 
-    * `Identification.expired` and `MedicalRec.expired` field returns a Boolean indicating whether the Identification or Medical Rec is expired. 
+* Ability to retrieve User's info, Identification and Medical Rec. 
 
-    * Sample data is seeded on startup within `./api/src/server.js`.
+* `Identification.expired` and `MedicalRec.expired` field returns a Boolean indicating whether the Identification or Medical Rec is expired. 
 
-    * You can access the application and make queries in the GraphQL Playground.
+* Sample data is seeded on startup within `./api/src/server.js`.
+
+* You can access the application and make queries in the GraphQL Playground.
 ---
 ## How to run:
-     * Clone the repo.
-     * In the application's root, run `docker-compose up` and wait until it finishes seeding. 
-     * Access endpoint at [http://localhost:8000/graphql](http://localhost:8000/graphql)
+ * Clone the repo.
+ * In the application's root, run `docker-compose up` and wait until it finishes seeding. 
+ * Access endpoint at [http://localhost:8000/graphql](http://localhost:8000/graphql)
 
 
 ---

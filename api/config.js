@@ -22,7 +22,7 @@ const config = {
   appDomain: configData.APP_DOMAIN,
   env: configData.NODE_ENV,
   logger: {
-    appname: `fp-backend-${configData.NODE_ENV}`,
+    appname: `api-${configData.NODE_ENV}`,
     host: configData.LOGGER_HOST,
     level: configData.LOGGER_LEVEL,
     port: configData.LOGGER_PORT,

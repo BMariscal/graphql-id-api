@@ -3,8 +3,8 @@ const { GraphQLDate } = require("graphql-iso-date");
 const moment = require("moment");
 
 const compareDates = (dateTimeA, dateTimeB)=> {
-  var momentA = moment(dateTimeA,"DD/MM/YYYY");
-  var momentB = moment(dateTimeB,"DD/MM/YYYY");
+  const momentA = moment(dateTimeA,"DD/MM/YYYY");
+  const momentB = moment(dateTimeB,"DD/MM/YYYY");
   if (momentA > momentB) return false;
   else if (momentA < momentB) return true;
   else return false;

@@ -1,0 +1,45 @@
+version: "3"
+services:
+  mysqldb:
+    build: ./db
+    image: mysql:healthcheck
+    command: --default-authentication-plugin=mysql_native_password
+    container_name: mysqldb
+    restart: on-failure:10
+    env_file:
+      - .env
+    networks:
+      - net
+    ports:
+      - "13306:3306"
+    environment:
+      - MYSQL_HOST=${MYSQL_HOST}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ALLOW_EMPTY_PASSWORD=1
+    volumes:
+      - mysqldb:/var/lib/mysqldb/data
+  api:
+    depends_on:
+      - mysqldb
+    build: ./api
+    container_name: api
+    restart: on-failure:10
+    env_file:
+      - .env
+    networks:
+      - net
+    ports:
+      - "8000:8000"
+      - "5000:5000"
+    volumes:
+      - ./api:/app
+      - /app/node_modules/
+    working_dir: /app
+
+volumes:
+  mysqldb:
+
+networks:
+  net:

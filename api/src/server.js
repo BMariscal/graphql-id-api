@@ -21,23 +21,27 @@ const server = new ApolloServer({
 const app = express();
 server.applyMiddleware({ app });
 
-db.sequelize
+db.sequelize //TODO: move to a script; run after db healthcheck;
   .sync()
   .then(() => {
     logger.info("SEEDING DB with Mock Data");
     // user 1 records
-    db.user.create({
+    return db.user.create({ //use Promise.all instead of nesting. 
       dob: faker.date.past(20),
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
     });
-    db.identification.create({
+  })
+  .then(() => {
+    return db.identification.create({
       number: faker.finance.account(),
       state: faker.address.state(),
       expiresAt: faker.date.future(5),
       imageURL: faker.image.avatar(),
       userId: 1,
     });
+  })
+  .then(() => {
     db.medicalRec.create({
       number: faker.finance.account(),
       state: faker.address.state(),
@@ -46,108 +50,22 @@ db.sequelize
       imageURL: faker.image.avatar(),
       userId: 1,
     });
-
-    //user 2 records
-    db.user.create({
-      dob: faker.date.past(50),
-      firstName: faker.name.firstName(),
-      lastName: faker.name.lastName(),
-    });
-    db.identification.create({
-      number: faker.finance.account(),
-      state: faker.address.state(),
-      expiresAt: faker.date.future(10),
-      imageURL: faker.image.avatar(),
-      userId: 2,
-    });
-    db.medicalRec.create({
-      number: faker.finance.account(),
-      state: faker.address.state(),
-      issuer: faker.lorem.sentence(),
-      expiresAt: faker.date.future(10),
-      imageURL: faker.image.avatar(),
-      userId: 2,
-    });
-
-    //user 3 records
-    db.user.create({
-      dob: faker.date.past(40),
-      firstName: faker.name.firstName(),
-      lastName: faker.name.lastName(),
-    });
-    db.identification.create({
-      number: faker.finance.account(),
-      state: faker.address.state(),
-      expiresAt: faker.date.past(1),
-      imageURL: faker.image.avatar(),
-      userId: 3,
-    });
-    db.medicalRec.create({
-      number: faker.finance.account(),
-      state: faker.address.state(),
-      issuer: faker.lorem.sentence(),
-      expiresAt: faker.date.past(2),
-      imageURL: faker.image.avatar(),
-      userId: 3,
-    });
-
-    //user 4 records
-    db.user.create({
-      dob: faker.date.past(27),
-      firstName: faker.name.firstName(),
-      lastName: faker.name.lastName(),
-    });
-    db.identification.create({
-      number: faker.finance.account(),
-      state: faker.address.state(),
-      expiresAt: faker.date.past(1),
-      imageURL: faker.image.avatar(),
-      userId: 4,
-    });
-    db.medicalRec.create({
-      number: faker.finance.account(),
-      state: faker.address.state(),
-      issuer: faker.lorem.sentence(),
-      expiresAt: faker.date.past(2),
-      imageURL: faker.image.avatar(),
-      userId: 4,
-    });
-
-    //user 5 records
-    db.user.create({
-      dob: faker.date.past(32),
-      firstName: faker.name.firstName(),
-      lastName: faker.name.lastName(),
-    });
-    db.identification.create({
-      number: faker.finance.account(),
-      state: faker.address.state(),
-      expiresAt: faker.date.future(1),
-      imageURL: faker.image.avatar(),
-      userId: 5,
-    });
-    db.medicalRec.create({
-      number: faker.finance.account(),
-      state: faker.address.state(),
-      issuer: faker.lorem.sentence(),
-      expiresAt: faker.date.future(2),
-      imageURL: faker.image.avatar(),
-      userId: 5,
-    });
+    logger.info("SEEDED DB with Mock Data");
+    return;
   })
   .catch((err) => {
     logger.error(err);
     process.exit(1);
   });
 app.listen({ port: config.server.port }, () => {
-  console.log(
+  logger.info(
     `🚀 Server ready at http://localhost:${config.server.port}${server.graphqlPath}`,
   );
 }),
   process.on("SIGTERM", () => {
-    console.info("SIGTERM signal received.");
-    console.log("Closing http server.");
+    logger.info("SIGTERM signal received.");
+    logger.info("Closing http server.");
     app.close(() => {
-      console.log("Http server closed.");
+      logger.info("Http server closed.");
     });
   });
